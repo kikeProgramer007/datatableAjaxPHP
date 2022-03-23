@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataTablesAjax</title>
+    <!-- CSS BOOTSTRAP 5.0 -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
+   
+    <!-- CSS BOOTSTRAP 5 PARA EL DATATABLES-->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="css/responsive.bootstrap5.min.css">
+    <!-- ICONOS DE BOOTSTRAP5 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+</head>
+<body>
+    
+<div class="container py-5">
+    <h1 class="text-center">CRUD CON AJAX, PHP Y DATATABLE</h1>
+    <div class="mb-2">
+        <button type="button" class="agregar btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#agregar">Agregar</button>
+    </div>
+    <div class="card">
+         <div class="card-body">
+        <table id="example" class="table table-hover table-striped dt-responsive nowrap" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Precio</th>
+                    <th>Stock</th>
+                    <th width="1%">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        </div>
+    </div>
+</div>
+<!-- Modal agregar-->
+<div class="modal fade" id="agregar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Agregar Registro</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form id="form-agregar">
+                <div class="mb-3">
+                  <label for="add_nombre" class="col-form-label">Nombre:</label>
+                  <input type="text" class="form-control" id="add_nombre" required>
+                </div>
+                <div class="mb-3">
+                    <label for="add_descripcion" class="col-form-label">Descripción:</label>
+                    <input type="text" class="form-control" id="add_descripcion" required>
+                </div>
+                <div class="mb-3">
+                    <label for="add_precio" class="col-form-label">Precio:</label>
+                    <input type="text" class="form-control" id="add_precio" required>
+                </div>
+                <div class="mb-3">
+                    <label for="add_stock" class="col-form-label">Stock:</label>
+                    <input type="text" class="form-control" id="add_stock" required>
+                </div>
+              
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Modal editar-->
+<div class="modal fade" id="editar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Editar Registro</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form id="form-editar">
+                <div class="mb-3">
+                  <input type="hidden"id="id">
+                  <label for="nombre_producto" class="col-form-label">Nombre:</label>
+                  <input type="text" class="form-control" id="nombre_producto" required>
+                </div>
+                <div class="mb-3">
+                    <label for="descripcion" class="col-form-label">Descripción:</label>
+                    <input type="text" class="form-control" id="descripcion" required>
+                </div>
+                <div class="mb-3">
+                    <label for="precio" class="col-form-label">Precio:</label>
+                    <input type="text" class="form-control" id="precio" required>
+                </div>
+                <div class="mb-3">
+                    <label for="stock" class="col-form-label">Stock:</label>
+                    <input type="text" class="form-control" id="stock" required>
+                </div>
+              
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Guardar cambios</button>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Modal Eliminar-->
+<div class="modal fade" id="eliminar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Eliminar registro</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+         
+          <form id="form-eliminar">
+            <label for=""> Dar de baja al producto: </label>
+            <b><label id="eliminarproducto"></label></b>
+            <input type="hidden" id="id_producto">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-danger btn-sm">Confirmar</button>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+     <!-- JS BOOTSTRAP 5.0 -->
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+     
+     <!-- JS BOOTSTRAP 5 PARA EL DATATABLES-->
+     <script src="js/jquery-3.5.1.js"></script>
+     <script src="js/jquery.dataTables.min.js"></script>
+     <script src="js/dataTables.bootstrap5.min.js"></script>
+     <script src="js/dataTables.responsive.min.js"></script>
+     <script src="js/responsive.bootstrap5.min.js"></script>
+
+     <script>
+        $(document).ready(function() {
+            var funcion = 'listar';
+          let datatable =  $('#example').DataTable({
+                "ajax":{
+                    "url": "controlador/ProductoController.php",
+                    "method": "POST",
+                    "data" : {funcion:funcion},
+                },
+                "columns": [
+                    { "data": "id" },
+                    { "data": "nombre" },
+                    { "data": "descripcion" },
+                    { "data": "precio" },
+                    { "data": "stock" },
+                    { "defaultContent":`<div class="btn-group btn-group-sm"><button type="button" class='editar btn btn-warning'data-bs-toggle="modal" data-bs-target="#editar"><i class="bi bi-pencil-fill"></i></button> <button type="button" class="eliminar btn btn-danger"data-bs-toggle="modal" data-bs-target="#eliminar"><i class="bi bi-trash2-fill"></i></button></div>`}
+                ],
+                "language": espanol
+            });
+
+            $('#form-agregar').submit(e=>{
+                let nombre=$('#add_nombre').val();
+                let descripcion=$('#add_descripcion').val();
+                let precio=$('#add_precio').val();
+                let stock=$('#add_stock').val();
+                funcion='agregar';
+                $.post('controlador/ProductoController.php',{nombre,descripcion,precio,stock,funcion},(response)=>{
+                })
+            })
+
+            $('#example tbody').on('click','.editar', function(){
+                let data = datatable.row($(this).parents()).data();
+                $('#id').val(data.id);
+                $('#nombre_producto').val(data.nombre);
+                $('#descripcion').val(data.descripcion);
+                $('#precio').val(data.precio);
+                $('#stock').val(data.stock);
+            })
+
+            $('#form-editar').submit(e=>{
+                let id =$('#id').val();
+                let nombre=$('#nombre_producto').val();
+                let descripcion=$('#descripcion').val();
+                let precio=$('#precio').val();
+                let stock=$('#stock').val();
+                funcion='editar';
+                $.post('controlador/ProductoController.php',{id,nombre,descripcion,precio,stock,funcion},(response)=>{
+                })
+            })
+
+            $('#example tbody').on('click','.eliminar', function(){
+                let data = datatable.row($(this).parents()).data();
+                $('#eliminarproducto').html(data.nombre);
+                $('#id_producto').val(data.id);
+            })
+
+            $('#form-eliminar').submit(e=>{
+                let id =$('#id_producto').val();
+                funcion='eliminar';
+                $.post('controlador/ProductoController.php',{id,funcion},(response)=>{
+                })
+            })
+
+            
+        } );
+
+      
+
+ 
+
+        let espanol ={
+            "decimal": "",
+                "emptyTable": "No hay información",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Mostrar _MENU_ Entradas",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "search": "Buscar:",
+                "zeroRecords": "Sin resultados encontrados",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Ultimo",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+        }
+     </script>
+</body>
+</html>
